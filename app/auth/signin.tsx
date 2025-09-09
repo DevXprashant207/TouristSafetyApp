@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { router } from 'expo-router';
 import {
   View,
   Text,
@@ -91,10 +92,14 @@ export default function SignIn() {
 
             <View style={styles.signUpLink}>
               <Text style={styles.linkText}>{t('dontHaveAccount')} </Text>
-              <Link href="/auth/signup" style={styles.link}>
-                <Text style={styles.linkButton}>{t('signUp')}</Text>
-              </Link>
+              <Text
+                style={styles.linkButton}
+                onPress={() => router.push("/auth/signup")}
+              >
+                {t('signUp')}
+              </Text>
             </View>
+
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

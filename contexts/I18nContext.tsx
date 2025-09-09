@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { translations } from '@/constants/translations';
+import   {translations} from '@/constants/translations';
 
 type Language = 'en' | 'es';
-
+type translations = keyof typeof translations; 
 interface I18nContextValue {
   currentLanguage: Language;
   t: (key: string) => string;
@@ -34,13 +34,14 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const t = (key: string): string => {
-    const translation = translations[currentLanguage][key];
+  const translation =
+    (translations[currentLanguage] as Record<string, string>)[key];
     if (translation === undefined) {
       console.warn(`Translation missing for key: ${key} in language: ${currentLanguage}`);
       return key;
     }
     return translation;
-  };
+};
 
   const changeLanguage = async (language: Language) => {
     try {

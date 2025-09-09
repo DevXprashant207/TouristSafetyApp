@@ -8,7 +8,7 @@ import type { User } from '@/types';
  * - Hardware security module (HSM) integration
  * - Multi-signature verification
  */
-export function generateBlockchainId(user: User): string {
+export async function generateBlockchainId(user: User): Promise<string> {
   const userData = {
     name: user.name,
     email: user.email,
@@ -18,12 +18,16 @@ export function generateBlockchainId(user: User): string {
   };
 
   const dataString = JSON.stringify(userData);
-  return Crypto.digestStringAsync(
+
+  const hash = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
     dataString,
     { encoding: Crypto.CryptoEncoding.HEX }
-  ).then(hash => `TSM-${hash.substring(0, 32).toUpperCase()}`);
+  );
+
+  return `TSM-${hash.substring(0, 32).toUpperCase()}`;
 }
+
 
 /**
  * Creates a blockchain issuance payload
